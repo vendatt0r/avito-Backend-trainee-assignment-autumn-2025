@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  db:
+
+    image: postgres:15
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: pr_reviewer
+    volumes:
+      - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d pr_reviewer"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always   # ← ВАЖНО
+    environment:
+      DATABASE_URL: "postgres://app:pass@db:5432/pr_reviewer?sslmode=disable"
+      PORT: "8080"
+    ports:
+      - "8080:8080"

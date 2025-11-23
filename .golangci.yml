@@ -1,0 +1,44 @@
+run:
+  timeout: 5m
+
+output:
+  formats:
+    - format: colored-line-number
+
+linters:
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - bodyclose
+    - gosec
+    - gosimple
+    - ineffassign
+    - typecheck
+    - revive
+    - misspell
+    - whitespace
+    - gofumpt
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+
+  revive:
+    rules:
+      - name: indent-error-flow
+      - name: exported
+      - name: error-naming
+      - name: receiver-naming
+
+  gofumpt:
+    extra-rules: true
+
+issues:
+  exclude-files:
+    - tests/
+  exclude-rules:
+    - linters: [gosec]
+      text: "G404"
