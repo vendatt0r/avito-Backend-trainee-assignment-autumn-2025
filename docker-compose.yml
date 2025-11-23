@@ -23,7 +23,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    restart: always   # ← ВАЖНО
+    restart: always
     environment:
       DATABASE_URL: "postgres://app:pass@db:5432/pr_reviewer?sslmode=disable"
       PORT: "8080"

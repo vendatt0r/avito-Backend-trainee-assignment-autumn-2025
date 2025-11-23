@@ -7,12 +7,11 @@ COPY . .
 RUN go build -o /app ./cmd/server
 
 FROM alpine:3.18
-RUN apk add --no-cache ca-certificates netcat-openbsd
+RUN apk add --no-cache ca-certificates
 COPY --from=build /app /app
-COPY wait-for.sh /wait-for.sh
-RUN chmod +x /wait-for.sh
 
 EXPOSE 8080
 ENV PORT=8080
 
-ENTRYPOINT ["/wait-for.sh", "db", "/app"]
+ENTRYPOINT ["/app"]
+
